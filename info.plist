@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.alfredapp.hidefile</string>
+	<key>connections</key>
+	<dict>
+		<key>7C52353B-DB1D-4660-84D6-5D6BC10622C4</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>6BD95DBF-7428-4C88-ABCA-BB90F26412AC</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>WoodwindHu</string>
+	<key>description</key>
+	<string>Hide/Unhide files</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Hide Files</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>keyword</key>
+				<string>hide</string>
+				<key>subtext</key>
+				<string>hide/unhide selected files</string>
+				<key>text</key>
+				<string>Hide/Unhide selected files</string>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>7C52353B-DB1D-4660-84D6-5D6BC10622C4</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>applescript</key>
+				<string>on alfred_script(q)
+tell application "Finder" to set selected to selection as alias list
+if selected is {} then return
+set out to ""
+repeat with fileSelected in selected
+	set pathSelected to quoted form of POSIX path of fileSelected
+	set out to do shell script "ls -ldO " &amp; pathSelected &amp; "| awk '{ print $5 }'"
+	if out is equal to "hidden" then
+		do shell script "chflags nohidden " &amp; pathSelected
+		display notification "Files or folders have been UNHIDDEN." with title "Unhide Files"
+	else if out is equal to "-" then
+		do shell script "chflags hidden " &amp; pathSelected
+		display notification "Files or folders have been HIDDEN. To view it, please press ⇧⌘. in Finder." with title "Hide Files"
+	end if
+end repeat
+end alfred_script</string>
+				<key>cachescript</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.applescript</string>
+			<key>uid</key>
+			<string>6BD95DBF-7428-4C88-ABCA-BB90F26412AC</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>Keywords are one of Alfred's most commonly used and most useful ways of launching actions. Set a keyword and connect it to the action(s) you want to perform.
+
+Type your keyword into Alfred, followed by your input text if needed, and you'll be on your way to boosting your productivity!</string>
+	<key>uidata</key>
+	<dict>
+		<key>6BD95DBF-7428-4C88-ABCA-BB90F26412AC</key>
+		<dict>
+			<key>xpos</key>
+			<integer>240</integer>
+			<key>ypos</key>
+			<integer>160</integer>
+		</dict>
+		<key>7C52353B-DB1D-4660-84D6-5D6BC10622C4</key>
+		<dict>
+			<key>xpos</key>
+			<integer>70</integer>
+			<key>ypos</key>
+			<integer>160</integer>
+		</dict>
+	</dict>
+	<key>variablesdontexport</key>
+	<array/>
+	<key>version</key>
+	<string>1.0</string>
+	<key>webaddress</key>
+	<string></string>
+</dict>
+</plist>
